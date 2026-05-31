@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx
+  namespace: infra-tools
+spec:
+  project: default
+
+  source:
+    repoURL: oci://registry-1.docker.io/bitnamicharts/nginx
+    targetRevision: 24.0.4
+    path: .
+    helm:
+      releaseName: nginx
+      values: |
+        service:
+          type: ClusterIP
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: application
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

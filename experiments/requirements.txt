@@ -1,0 +1,4 @@
+mlflow==3.12.0
+scikit-learn==1.8.0
+prometheus-client==0.22.1
+joblib==1.5.3

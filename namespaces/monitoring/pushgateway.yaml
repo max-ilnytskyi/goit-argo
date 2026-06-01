@@ -19,6 +19,11 @@ spec:
           type: ClusterIP
           port: 9091
 
+        serviceMonitor:
+          enabled: true
+          namespace: monitoring
+          honorLabels: true
+
         resources:
           requests:
             cpu: 50m

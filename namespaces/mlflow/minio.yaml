@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio
+  namespace: infra-tools
+spec:
+  project: default
+
+  source:
+    chart: minio
+    repoURL: registry-1.docker.io/bitnamicharts
+    targetRevision: 17.0.21
+    helm:
+      releaseName: minio
+      valuesObject:
+        global:
+          security:
+            allowInsecureImages: true
+
+        image:
+          repository: bitnamilegacy/minio
+          tag: 2025.7.23-debian-12-r3
+
+        mode: standalone
+
+        auth:
+          rootUser: mlflow
+          rootPassword: mlflow-minio-password
+
+        defaultBuckets: mlflow-artifacts
+
+        console:
+          enabled: false
+
+        persistence:
+          enabled: true
+          storageClass: gp3
+          size: 5Gi
+
+        service:
+          type: ClusterIP
+          ports:
+            api: 9000
+
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 300m
+            memory: 512Mi
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mlflow
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

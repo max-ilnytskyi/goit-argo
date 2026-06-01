@@ -39,6 +39,16 @@ spec:
           ports:
             - name: http
               containerPort: 5000
+          startupProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 5
+            failureThreshold: 120
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 5
+            failureThreshold: 3
           resources:
             requests:
               cpu: 100m

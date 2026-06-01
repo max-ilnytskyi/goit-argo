@@ -24,6 +24,7 @@ spec:
               mlflow server \
                 --host 0.0.0.0 \
                 --port 5000 \
+                --workers 1 \
                 --allowed-hosts "*" \
                 --backend-store-uri postgresql://mlflow:mlflow-postgres-password@postgresql.mlflow.svc.cluster.local:5432/mlflow \
                 --artifacts-destination s3://mlflow-artifacts
